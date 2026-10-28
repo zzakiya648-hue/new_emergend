@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reviewflow · Shortfundly / Intern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f5f0; --surface:#ffffff; --ink:#1c1917; --muted:#6b645c; --line:#e7e1d8;
+  --accent:#c2611f; --btn:#1c1917; --btn-ink:#ffffff; --grid:rgba(28,25,23,.035);
+  --warn-bg:#fdf0e4; --warn-ink:#9a4a12;
+  --rev-bg:#e9eefb; --rev-ink:#2f4a8f;
+  --ok-bg:#e5f3e8; --ok-ink:#2b6a3b;
+  --serif:"Newsreader","Iowan Old Style","Georgia",serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#151311; --surface:#1d1a17; --ink:#f3eee7; --muted:#a39a8e; --line:#2e2a25;
+    --accent:#e0803d; --btn:#f3eee7; --btn-ink:#151311; --grid:rgba(255,255,255,.03);
+    --warn-bg:#3a2616; --warn-ink:#f0b27f;
+    --rev-bg:#1f2a47; --rev-ink:#a9bdf0;
+    --ok-bg:#1c3324; --ok-ink:#9fd7ae;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{
+  margin:0;background-color:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:4px 4px;min-height:100vh;
+}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+
+/* header */
+.top{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 92%,transparent);position:sticky;top:0;z-index:5;backdrop-filter:blur(6px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;gap:16px}
+.brand{display:flex;align-items:baseline;gap:14px;text-decoration:none}
+.logo{font-family:var(--serif);font-size:30px;font-weight:500;letter-spacing:-.01em}
+.logo i{color:var(--accent);font-weight:400}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+nav{display:flex;gap:28px;align-items:center}
+nav a{text-decoration:none;color:var(--muted);font-size:16px;display:inline-flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1.5px solid transparent}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--ink);border-bottom-color:var(--ink)}
+nav svg{width:16px;height:16px}
+
+/* hero */
+.hero{padding:64px 0 40px;position:relative}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin:0 0 22px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,7vw,84px);line-height:1.02;letter-spacing:-.025em;margin:0;max-width:15em}
+h1 em{color:var(--accent);font-style:italic}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:28px;flex-wrap:wrap}
+.lede{max-width:34em;color:var(--muted);font-size:18px;margin:0}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;padding:15px 22px;font:600 15px var(--sans);cursor:pointer;text-decoration:none}
+.btn:hover{opacity:.9}
+.btn svg{width:14px;height:14px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);padding:9px 14px;font-weight:500;font-size:13px}
+.btn.ghost:hover{border-color:var(--ink);opacity:1}
+.btn.sm{padding:9px 14px;font-size:13px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:32px 0 64px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px 26px 22px}
+.stat .row{display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+.stat .lab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.stat svg{width:18px;height:18px}
+.stat .num{font-family:var(--serif);font-size:64px;line-height:1;margin-top:34px;font-weight:400}
+
+/* sections */
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:16px}
+.sec-head h2{font-family:var(--serif);font-weight:400;font-size:32px;margin:0;letter-spacing:-.01em}
+.link-mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.link-mono:hover{color:var(--ink)}
+.empty{font-family:var(--mono);font-size:14px;color:var(--muted);text-align:center;padding:56px 0 80px}
+.empty a{color:var(--accent)}
+main{padding-bottom:90px}
+
+/* entries */
+.entry{display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.entry:hover .etitle{color:var(--accent)}
+.etitle{font-family:var(--serif);font-size:22px;line-height:1.2}
+.emeta{color:var(--muted);font-size:14px}
+.round{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.pill.needs{background:var(--warn-bg);color:var(--warn-ink)}
+.pill.review{background:var(--rev-bg);color:var(--rev-ink)}
+.pill.approved{background:var(--ok-bg);color:var(--ok-ink)}
+
+/* forms */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;margin:36px 0 12px}
+.panel h3{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 16px}
+.fields{display:grid;grid-template-columns:2fr 1.2fr 1.5fr auto;gap:12px;align-items:end}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+input,textarea{width:100%;font:400 15px var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 12px}
+textarea{min-height:110px;resize:vertical}
+
+/* assignment cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-top:16px}
+.card-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.card h3{font-family:var(--serif);font-weight:400;font-size:26px;margin:0;line-height:1.15}
+.card .sub{color:var(--muted);font-size:14px;margin-top:4px}
+.badges{display:flex;gap:10px;align-items:center}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.log{list-style:none;margin:12px 0 0;padding:0}
+.log li{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.log li:last-child{border-bottom:0}
+.log time{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.note{color:var(--muted)}
+
+/* email log */
+.mail{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin-top:16px}
+.mail h3{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 4px}
+.mail .to{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.mail pre{white-space:pre-wrap;font:400 14.5px/1.6 var(--sans);color:var(--ink);margin:14px 0 0}
+.fineprint{color:var(--muted);font-size:14px;max-width:44em;margin:16px 0 0}
+
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:24px;width:min(480px,92vw)}
+dialog::backdrop{background:rgba(20,17,14,.45)}
+dialog h3{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 6px}
+dialog p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.dlg-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+
+/* chat */
+.chatbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:28px 0 0;overflow:hidden}
+.chatlog{height:min(56vh,520px);overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;flex-direction:column;gap:8px;max-width:78%}
+.msg.me{align-self:flex-end;align-items:flex-end}
+.msg.bot{align-self:flex-start}
+.bubble{white-space:pre-wrap;padding:12px 16px;border-radius:14px;font-size:15px;line-height:1.5}
+.msg.bot .bubble{background:var(--bg);border:1px solid var(--line);border-top-left-radius:4px}
+.msg.me .bubble{background:var(--btn);color:var(--btn-ink);border-top-right-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 13px var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chatform{display:flex;gap:10px;padding:14px;border-top:1px solid var(--line);background:var(--surface)}
+.chatform input{flex:1}
+
+@media (max-width:860px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .fields{grid-template-columns:1fr}
+  .entry{grid-template-columns:1fr auto}
+  .entry .round{display:none}
+  .tag{display:none}
+}
+@media (max-width:560px){
+  .top .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+  nav{gap:18px}
+  .hero{padding-top:40px}
+  .stat .num{font-size:52px;margin-top:22px}
+  .log li{grid-template-columns:1fr}
+  .msg{max-width:92%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#dashboard" aria-label="Reviewflow home">
+      <span class="logo">Review<i>flow</i></span>
+      <span class="tag">Shortfundly / Intern</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#dashboard" data-route="dashboard">Dashboard</a>
+      <a href="#assignments" data-route="assignments">Assignments</a>
+      <a href="#chat" data-route="chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+        Chat
+      </a>
+      <a href="#email" data-route="email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        Email
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="view"></main>
+
+<dialog id="dlg">
+  <form method="dialog" id="dlgForm">
+    <h3 id="dlgTitle"></h3>
+    <p id="dlgHint"></p>
+    <textarea id="dlgNote" placeholder="Add a short note for the client (optional)"></textarea>
+    <div class="dlg-actions">
+      <button type="button" class="btn ghost" id="dlgCancel">Cancel</button>
+      <button type="submit" class="btn sm" id="dlgOk">Confirm</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(function(){
+  var KEY = "reviewflow.v1";
+  var state = load();
+
+  function load(){
+    try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.assignments && s.emails) return s; } catch(e){}
+    return { assignments: [], emails: [] };
+  }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function fmt(iso){ var d = new Date(iso); return d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"}) + " " + d.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"}); }
+  function fmtDay(iso){ return new Date(iso).toLocaleDateString(undefined,{day:"numeric",month:"short"}); }
+
+  var ICON = {
+    inbox:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg>',
+    alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>',
+    list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 1.5 1.5L7 5M3 13l1.5 1.5L7 12M3 20l1.5 1.5L7 19M11 6h10M11 13h10M11 20h10"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/></svg>',
+    arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>'
+  };
+
+  var STATUS = {
+    review:   { label: "In review",         cls: "review" },
+    needs:    { label: "Needs corrections", cls: "needs" },
+    approved: { label: "Approved",          cls: "approved" }
+  };
+
+  /* ---------- email nudges (recorded here; send through your SMTP or the mail app) ---------- */
+  function notify(a, kind, note){
+    var subj, lines;
+    var hi = "Hi " + a.client + ",\n\n";
+    if (kind === "opened"){
+      subj = "Correction opened: " + a.title;
+      lines = hi + "A correction has been opened on \u201C" + a.title + "\u201D (review round " + a.round + ").";
+    } else if (kind === "closed"){
+      subj = "Correction closed: " + a.title;
+      lines = hi + "The correction on \u201C" + a.title + "\u201D is now closed and the work is back in review.";
+    } else if (kind === "next"){
+      subj = "Back for review round " + a.round + ": " + a.title;
+      lines = hi + "\u201C" + a.title + "\u201D has been resubmitted and is heading into review round " + a.round + ".";
+    } else {
+      subj = "Approved: " + a.title;
+      lines = hi + "Good news. \u201C" + a.title + "\u201D has been approved after " + a.round + " review round" + (a.round > 1 ? "s" : "") + ".";
+    }
+    if (note) lines += "\n\nNote from the reviewer:\n" + note;
+    lines += "\n\nThanks,\nShortfundly Intern Team";
+    state.emails.unshift({ id: uid(), aid: a.id, to: a.email, subject: subj, body: lines, at: new Date().toISOString() });
+  }
+
+  function log(a, text, note){ a.history.push({ at: new Date().toISOString(), text: text, note: note || "" }); }
+
+  /* ---------- actions ---------- */
+  function addAssignment(title, client, email){
+    var a = { id: uid(), title: title, client: client, email: email, status: "review", round: 1, created: new Date().toISOString(), history: [] };
+    log(a, "Assignment created \u00B7 review round 1");
+    state.assignments.unshift(a);
+    save();
+  }
+  function perform(id, kind, note){
+    var a = state.assignments.find(function(x){ return x.id === id; });
+    if (!a) return null;
+    if (kind === "opened"){ a.status = "needs"; log(a, "Correction opened", note); }
+    if (kind === "closed"){ a.status = "review"; log(a, "Correction closed", note); }
+    if (kind === "next"){ a.round += 1; a.status = "review"; log(a, "Sent back for review round " + a.round, note); }
+    if (kind === "approved"){ a.status = "approved"; log(a, "Approved", note); }
+    notify(a, kind, note);
+    save();
+    return a;
+  }
+  function act(id, kind, note){ perform(id, kind, note); render(); }
+  function remove(id){
+    if (!confirm("Delete this assignment and its history?")) return;
+    state.assignments = state.assignments.filter(function(x){ return x.id !== id; });
+    state.emails = state.emails.filter(function(x){ return x.aid !== id; });
+    save(); render();
+  }
+
+  /* ---------- note dialog ---------- */
+  var dlg = document.getElementById("dlg");
+  var dlgNote = document.getElementById("dlgNote");
+  var pending = null;
+  document.getElementById("dlgCancel").addEventListener("click", function(){ pending = null; dlg.close(); });
+  document.getElementById("dlgForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var p = pending; pending = null; dlg.close();
+    if (p) act(p.id, p.kind, dlgNote.value.trim());
+  });
+  var COPY = {
+    opened:  ["Open a correction", "The client gets an email that a correction has opened."],
+    closed:  ["Close the correction", "The client gets an email that the correction is closed."],
+    next:    ["Send for next review", "The round number goes up and the client gets an email."],
+    approved:["Approve this assignment", "The client gets an approval email."]
+  };
+  function ask(id, kind){
+    pending = { id: id, kind: kind };
+    document.getElementById("dlgTitle").textContent = COPY[kind][0];
+    document.getElementById("dlgHint").textContent = COPY[kind][1];
+    document.getElementById("dlgOk").textContent = COPY[kind][0];
+    dlgNote.value = "";
+    if (dlg.showModal) dlg.showModal(); else act(id, kind, "");
+  }
+
+  /* ---------- views ---------- */
+  function counts(){
+    var c = { all: state.assignments.length, needs: 0, review: 0, approved: 0 };
+    state.assignments.forEach(function(a){ c[a.status]++; });
+    return c;
+  }
+  function pill(a){ var s = STATUS[a.status]; return '<span class="pill ' + s.cls + '">' + s.label + '</span>'; }
+
+  function entryRow(a){
+    return '<a class="entry" href="#assignments">' +
+      '<div><div class="etitle">' + esc(a.title) + '</div><div class="emeta">' + esc(a.client) + ' \u00B7 added ' + fmtDay(a.created) + '</div></div>' +
+      '<span class="round">Round ' + a.round + '</span>' + pill(a) + '</a>';
+  }
+
+  function viewDashboard(){
+    var c = counts();
+    var recent = state.assignments.slice(0,5).map(entryRow).join("");
+    return '' +
+    '<section class="hero">' +
+      '<p class="kicker">Issue \u211601 \u2014 The intern\u2019s logbook</p>' +
+      '<h1>Keep every review, correction &amp; resubmission <em>on the record.</em></h1>' +
+      '<div class="hero-row">' +
+        '<p class="lede">A tidy ledger for assignments across review rounds. Clients get a nudge over SMTP the moment a correction opens, closes, or heads back for the next review.</p>' +
+        '<a class="btn" href="#assignments">Open assignments ' + ICON.arrow + '</a>' +
+      '</div>' +
+    '</section>' +
+    '<section class="stats" aria-label="Summary">' +
+      stat("Assignments", ICON.inbox, c.all) +
+      stat("Needs corrections", ICON.alert, c.needs) +
+      stat("In review", ICON.list, c.review) +
+      stat("Approved", ICON.check, c.approved) +
+    '</section>' +
+    '<section>' +
+      '<div class="sec-head"><h2>Recent entries</h2><a class="link-mono" href="#assignments">View all \u2192</a></div>' +
+      (recent || '<p class="empty">No assignments yet \u2014 <a href="#assignments">go start one</a>.</p>') +
+    '</section>';
+  }
+  function stat(label, icon, n){
+    return '<div class="stat"><div class="row"><span class="lab">' + label + '</span>' + icon + '</div><div class="num">' + n + '</div></div>';
+  }
+
+  function cardActions(a){
+    if (a.status === "review")
+      return '<button class="btn ghost" data-act="opened" data-id="' + a.id + '">Open correction</button>' +
+             '<button class="btn ghost" data-act="next" data-id="' + a.id + '">Send for next review</button>' +
+             '<button class="btn sm" data-act="approved" data-id="' + a.id + '">Approve</button>';
+    if (a.status === "needs")
+      return '<button class="btn sm" data-act="closed" data-id="' + a.id + '">Close correction</button>';
+    return '';
+  }
+  function card(a){
+    var hist = a.history.slice().reverse().map(function(h){
+      return '<li><time>' + fmt(h.at) + '</time><div>' + esc(h.text) + (h.note ? '<div class="note">\u201C' + esc(h.note) + '\u201D</div>' : '') + '</div></li>';
+    }).join("");
+    return '<article class="card">' +
+      '<div class="card-top"><div><h3>' + esc(a.title) + '</h3><div class="sub">' + esc(a.client) + ' \u00B7 ' + esc(a.email) + '</div></div>' +
+      '<div class="badges"><span class="round">Round ' + a.round + '</span>' + pill(a) + '</div></div>' +
+      '<div class="actions">' + cardActions(a) +
+      '<button class="btn ghost" data-del="' + a.id + '" style="margin-left:auto">Delete</button></div>' +
+      '<details><summary>History (' + a.history.length + ')</summary><ul class="log">' + hist + '</ul></details>' +
+    '</article>';
+  }
+
+  function viewAssignments(){
+    return '' +
+    '<section class="hero" style="padding-bottom:0"><p class="kicker">Assignments</p>' +
+    '<h1 style="font-size:clamp(34px,5vw,56px)">Every round, <em>logged.</em></h1></section>' +
+    '<section class="panel"><h3>New assignment</h3>' +
+      '<form id="newForm" class="fields">' +
+        '<div><label for="fTitle">Assignment title</label><input id="fTitle" required placeholder="e.g. Q3 brand guidelines"></div>' +
+        '<div><label for="fClient">Client name</label><input id="fClient" required placeholder="e.g. Priya"></div>' +
+        '<div><label for="fEmail">Client email</label><input id="fEmail" type="email" required placeholder="client@example.com"></div>' +
+        '<button class="btn" type="submit">Add assignment</button>' +
+      '</form></section>' +
+    '<section>' +
+      '<div class="sec-head"><h2>All assignments</h2><span class="link-mono">' + state.assignments.length + ' total</span></div>' +
+      (state.assignments.length ? state.assignments.map(card).join("") : '<p class="empty">No assignments yet \u2014 add your first one above.</p>') +
+    '</section>';
+  }
+
+  function viewEmail(){
+    var items = state.emails.map(function(m){
+      var href = "mailto:" + encodeURIComponent(m.to) + "?subject=" + encodeURIComponent(m.subject) + "&body=" + encodeURIComponent(m.body);
+      return '<article class="mail"><h3>' + esc(m.subject) + '</h3><div class="to">To ' + esc(m.to) + ' \u00B7 ' + fmt(m.at) + '</div>' +
+        '<pre>' + esc(m.body) + '</pre>' +
+        '<div class="actions"><a class="btn ghost" href="' + href + '">Open in mail app</a>' +
+        '<button class="btn ghost" data-copy="' + m.id + '">Copy text</button></div></article>';
+    }).join("");
+    return '' +
+    '<section class="hero" style="padding-bottom:0"><p class="kicker">Client nudges</p>' +
+    '<h1 style="font-size:clamp(34px,5vw,56px)">Every email, <em>on file.</em></h1>' +
+    '<p class="fineprint">A correction opening, closing, or going back for review writes an email here. This page runs in the browser, so it cannot talk to an SMTP server by itself. Use \u201COpen in mail app\u201D to send, or connect a small backend later.</p></section>' +
+    '<section style="margin-top:24px"><div class="sec-head"><h2>Outbox</h2><span class="link-mono">' + state.emails.length + ' emails</span></div>' +
+    (items || '<p class="empty">Nothing yet \u2014 emails appear when you act on an assignment.</p>') + '</section>';
+  }
+
+  /* ---------- chatbot ---------- */
+  var MAIN = ["Add assignment", "Show status", "Open correction", "Approve"];
+  var chatLog = [{ who: "bot", text: "Hi, I’m the Reviewflow assistant. Tell me what happened and I’ll log it, update the status, and draft the client email.\n\nTry “add assignment”, “open correction”, “send for next review” or “approve”.", chips: MAIN }];
+  var flow = null, focusChat = false;
+  var ACTS = {
+    opened:   { elig: "review", verb: "open a correction on" },
+    closed:   { elig: "needs",  verb: "close the correction on" },
+    next:     { elig: "review", verb: "send for the next review" },
+    approved: { elig: "review", verb: "approve" }
+  };
+  var DONE = {
+    opened:   function(a){ return "Correction opened on “" + a.title + "”."; },
+    closed:   function(a){ return "Correction closed on “" + a.title + "”. It’s back in review."; },
+    next:     function(a){ return "“" + a.title + "” is heading into review round " + a.round + "."; },
+    approved: function(a){ return "“" + a.title + "” is approved."; }
+  };
+
+  function say(text, chips){ chatLog.push({ who: "bot", text: text, chips: chips || [] }); }
+  function label(a, i){ return (i + 1) + " · " + a.title; }
+  function eligible(kind){
+    return state.assignments.map(function(a, i){ return { a: a, i: i }; })
+      .filter(function(x){ return x.a.status === ACTS[kind].elig; });
+  }
+  function pickFrom(items, text){
+    var m = text.match(/^#?(\d+)\b/);
+    if (m){ var n = +m[1] - 1; var hit = items.filter(function(x){ return x.i === n; })[0]; return hit ? hit.a : null; }
+    var q = text.toLowerCase().trim();
+    if (!q) return null;
+    var found = items.filter(function(x){ return x.a.title.toLowerCase().indexOf(q) > -1 || x.a.client.toLowerCase().indexOf(q) > -1; });
+    return found.length === 1 ? found[0].a : null;
+  }
+  function askNote(a){ say("Add a short note for " + a.client + " about “" + a.title + "”, or type skip.", ["skip", "Cancel"]); }
+
+  function startAct(kind, rest){
+    var items = eligible(kind);
+    if (!items.length){
+      say(kind === "closed" ? "No assignment has an open correction right now." : "No assignment is in review right now. Add one first.", ["Add assignment", "Show status"]);
+      return;
+    }
+    var a = rest ? pickFrom(items, rest) : (items.length === 1 ? items[0].a : null);
+    if (a){ flow = { type: "act", kind: kind, id: a.id, step: "note" }; askNote(a); return; }
+    flow = { type: "act", kind: kind, step: "pick" };
+    say("Which assignment do you want to " + ACTS[kind].verb + "?", items.map(function(x){ return label(x.a, x.i); }).concat(["Cancel"]));
+  }
+
+  function statusText(){
+    var c = counts();
+    if (!c.all) return "No assignments yet. Say “add assignment” to start.";
+    var lines = state.assignments.map(function(a, i){ return (i + 1) + ". " + a.title + " — " + a.client + " · " + STATUS[a.status].label + " · Round " + a.round; });
+    return c.all + " assignments: " + c.review + " in review, " + c.needs + " needing corrections, " + c.approved + " approved.\n\n" + lines.join("\n");
+  }
+
+  function handleFlow(t){
+    if (/^(cancel|stop|exit|quit)$/i.test(t)){ flow = null; say("Cancelled. What next?", MAIN); return; }
+    if (flow.type === "add"){
+      var d = flow.data;
+      if (flow.step === "title"){ d.title = t; flow.step = "client"; say("Who is the client?"); }
+      else if (flow.step === "client"){ d.client = t; flow.step = "email"; say("What is " + t + "’s email address?"); }
+      else {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)){ say("That doesn’t look like an email address. Try again, for example name@example.com."); return; }
+        addAssignment(d.title, d.client, t);
+        flow = null;
+        say("Added “" + d.title + "” for " + d.client + ". It starts in review round 1.", ["Show status", "Add assignment"]);
+      }
+      return;
+    }
+    if (flow.type === "act"){
+      if (flow.step === "pick"){
+        var items = eligible(flow.kind), a = pickFrom(items, t);
+        if (!a){ say("I couldn’t match that. Pick one from the list, or type its number.", items.map(function(x){ return label(x.a, x.i); }).concat(["Cancel"])); return; }
+        flow.id = a.id; flow.step = "note"; askNote(a);
+        return;
+      }
+      var note = /^skip$/i.test(t) ? "" : t, kind = flow.kind;
+      var done = perform(flow.id, kind, note);
+      flow = null;
+      if (!done){ say("I couldn’t find that assignment any more.", MAIN); return; }
+      say(DONE[kind](done) + " An email draft for " + done.client + " is saved in the Email tab.", ["Show status", "Show emails"]);
+    }
+  }
+
+  function handle(t){
+    if (flow){ handleFlow(t); return; }
+    var m;
+    function rest(){ return t.slice(m.index + m[0].length).replace(/^[\s:#-]+/, ""); }
+    if ((m = t.match(/approv\w*/i))) return startAct("approved", rest());
+    if ((m = t.match(/clos\w*\s+(the\s+)?correction/i))) return startAct("closed", rest());
+    if ((m = t.match(/(open|start|raise)\w*\s+(a\s+)?correction|needs?\s+correction/i))) return startAct("opened", rest());
+    if ((m = t.match(/next\s+review|resubmit\w*|send\s+(it\s+)?(back|for)\s*(the\s+)?(next\s+)?(review)?/i))) return startAct("next", rest());
+    if (/\b(emails?|outbox|nudges?)\b/i.test(t)){
+      if (!state.emails.length){ say("No emails yet. They appear when you open or close a correction, send for review, or approve.", MAIN); return; }
+      say("Latest emails (open the Email tab to send them):\n\n" + state.emails.slice(0, 4).map(function(e){ return "• " + e.subject + " → " + e.to; }).join("\n"), MAIN);
+      return;
+    }
+    if (/\b(add|new|create)\b/i.test(t)){ flow = { type: "add", step: "title", data: {} }; say("Sure. What is the assignment called?", ["Cancel"]); return; }
+    if (/\b(status|list|show|summary|all|assignments?)\b/i.test(t)){ say(statusText(), MAIN); return; }
+    if (/^(cancel|skip)$/i.test(t)){ say("Nothing to cancel. What would you like to do?", MAIN); return; }
+    if (/^(hi|hello|hey|help|\?|vanakkam)/i.test(t)){ say("I can add assignments, open and close corrections, send work back for the next review, approve, and show status or emails.", MAIN); return; }
+    say("I didn’t catch that. Try one of these:", MAIN);
+  }
+
+  function chat(input){
+    var t = String(input || "").trim();
+    if (!t) return;
+    chatLog.push({ who: "me", text: t });
+    handle(t);
+    focusChat = true;
+    render();
+  }
+
+  function viewChat(){
+    var msgs = chatLog.map(function(m, i){
+      var chips = (m.who === "bot" && m.chips && m.chips.length && i === chatLog.length - 1)
+        ? '<div class="chips">' + m.chips.map(function(c){ return '<button type="button" class="chip" data-chip="' + esc(c) + '">' + esc(c) + '</button>'; }).join("") + '</div>' : "";
+      return '<div class="msg ' + m.who + '"><div class="bubble">' + esc(m.text) + '</div>' + chips + '</div>';
+    }).join("");
+    return '' +
+    '<section class="hero" style="padding-bottom:0"><p class="kicker">Assistant</p>' +
+    '<h1 style="font-size:clamp(34px,5vw,56px)">Just say what <em>happened.</em></h1></section>' +
+    '<section class="chatbox"><div class="chatlog" id="chatlog">' + msgs + '</div>' +
+    '<form id="chatForm" class="chatform"><input id="chatIn" autocomplete="off" aria-label="Message" placeholder="Type a message, for example “open correction”">' +
+    '<button class="btn" type="submit">Send</button></form></section>';
+  }
+
+  /* ---------- router ---------- */
+  function route(){ var r = (location.hash || "#dashboard").slice(1); return ["dashboard","assignments","chat","email"].indexOf(r) > -1 ? r : "dashboard"; }
+  function render(){
+    var r = route();
+    document.getElementById("view").innerHTML = r === "assignments" ? viewAssignments() : r === "chat" ? viewChat() : r === "email" ? viewEmail() : viewDashboard();
+    if (r === "chat"){
+      var lg = document.getElementById("chatlog"); if (lg) lg.scrollTop = lg.scrollHeight;
+      if (focusChat){ var ci = document.getElementById("chatIn"); if (ci && ci.focus) ci.focus(); focusChat = false; }
+    }
+    document.querySelectorAll("nav a").forEach(function(a){ a.classList.toggle("on", a.dataset.route === r); });
+    document.title = "Reviewflow \u00B7 " + r.charAt(0).toUpperCase() + r.slice(1);
+  }
+
+  document.addEventListener("click", function(e){
+    var t = e.target.closest("[data-act],[data-del],[data-copy],[data-chip]");
+    if (!t) return;
+    if (t.dataset.chip) chat(t.dataset.chip);
+    else if (t.dataset.act) ask(t.dataset.id, t.dataset.act);
+    else if (t.dataset.del) remove(t.dataset.del);
+    else if (t.dataset.copy){
+      var m = state.emails.find(function(x){ return x.id === t.dataset.copy; });
+      if (m && navigator.clipboard){ navigator.clipboard.writeText(m.subject + "\n\n" + m.body).then(function(){ t.textContent = "Copied"; }, function(){}); }
+    }
+  });
+  document.addEventListener("submit", function(e){
+    if (e.target.id === "chatForm"){ e.preventDefault(); chat(document.getElementById("chatIn").value); return; }
+    if (e.target.id !== "newForm") return;
+    e.preventDefault();
+    addAssignment(document.getElementById("fTitle").value.trim(), document.getElementById("fClient").value.trim(), document.getElementById("fEmail").value.trim());
+    render();
+  });
+  window.addEventListener("hashchange", function(){ render(); window.scrollTo(0,0); });
+  render();
+})();
+</script>
+</body>
+</html>
